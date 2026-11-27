@@ -1,3 +1,6 @@
 # 依赖与构建产物
 build/
 *.o
+
+# vim swap 文件
+*.swp

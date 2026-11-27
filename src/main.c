@@ -17,7 +17,16 @@ int main() {
 
 		line[pos] = '\0';  //将换行符改为'\0'
 
-		if(pos == len && !feof(stdin) && !ferror(stdin)) continue;  //没有读到换行符，行超长开始下一次循环
+		if(pos == len && !feof(stdin) && !ferror(stdin)) {  //没有读到换行符，行超长开始下一次循环
+			while(fgets(line, sizeof line, stdin)) {
+				pos = strcspn(line, "\n");
+				len = strlen(line);
+				if(pos == len && !feof(stdin) && !ferror(stdin)) continue;
+				else break;
+			}
+
+			continue;
+		}
 
 		if(line[0] == '\0') continue; //行为空，进入下一循环
 
@@ -43,6 +52,8 @@ int main() {
 				p++;
 			}
 		}
+
+		if(argc == 0) continue;
 
 		char out[128];
 
