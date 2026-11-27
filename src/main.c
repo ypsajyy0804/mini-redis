@@ -17,7 +17,7 @@ int main() {
 
 		line[pos] = '\0';  //将换行符改为'\0'
 
-		if(pos == len && !feof(stdin) && !ferror(stdin)) break;  //没有读到换行符，行超长，跳出循环
+		if(pos == len && !feof(stdin) && !ferror(stdin)) continue;  //没有读到换行符，行超长开始下一次循环
 
 		if(line[0] == '\0') continue; //行为空，进入下一循环
 

@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -Isrc -MMD -MP
+CFLAGS := -Wall -Wextra -Werror -Isrc -MMD -MP -g
 LDFLAGS :=
 
 APP_SRC := src/main.c
