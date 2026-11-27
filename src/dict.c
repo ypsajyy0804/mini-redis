@@ -4,6 +4,7 @@
 #include <string.h>
 
 typedef struct Dict {
+	//定义节点结构
 	struct Node {
 		char *key;
 		char *val;
@@ -13,7 +14,7 @@ typedef struct Dict {
 	unsigned size;
 } Dict;
 
-Dict *dict_creat(void) {
+Dict *dict_create(void) {
 	Dict *d = malloc(sizeof(Dict));
 
 	if(d == NULL) {
@@ -73,6 +74,7 @@ int dict_set(Dict *d, const char *key, const char *val) {
 
 	while(cur != NULL) {
 		if(strcmp(key, cur->key) == 0) {
+			free(cur->val);
 			cur->val = strdup(val);
 			return 0;
 		}

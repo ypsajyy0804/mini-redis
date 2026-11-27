@@ -1,22 +1,41 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Isrc -MMD -MP
-SRCS = src/main.c src/dict.c src/cmd.c
-OBJ = $(patsubst src/%.c,build/%.o,$(SRCS))
-DEPS = $(OBJ:.o=.d)
+CC := gcc
+CFLAGS := -Wall -Wextra -Werror -Isrc -MMD -MP
+LDFLAGS :=
+
+APP_SRC := src/main.c
+LIB_SRCS := src/dict.c src/cmd.c
+
+APP_OBJ := $(patsubst src/%.c,build/%.o,$(APP_SRC))
+LIB_OBJS := $(patsubst src/%.c,build/%.o,$(LIB_SRCS))
+
+TEST_SRC := tests/leak_demo.c
+TEST_OBJ := $(patsubst tests/%.c,build/tests/%.o,$(TEST_SRC))
+TEST_BIN := build/tests/leak_demo
+
+DEPS = $(APP_OBJ:.o=.d) $(LIB_OBJS:.o=.d) $(TEST_OBJ:.o=.d)
 TARGET = build/redis-lite
 
-.PHONY: all clean
+.PHONY: all test clean
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ) | build
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): $(APP_OBJ) $(LIB_OBJS) | build
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(TEST_BIN): $(TEST_OBJ) $(LIB_OBJS) | build/tests
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 build/%.o: src/%.c | build
 	$(CC) $(CFLAGS) -c $< -o $@
 
-build:
-	mkdir -p build
+build/tests/%.o: tests/%.c | build/tests
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build build/tests:
+	mkdir -p $@
+
+test: $(TEST_BIN)
+	./$(TEST_BIN)
 
 -include $(DEPS)
 

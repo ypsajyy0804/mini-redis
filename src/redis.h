@@ -1,7 +1,7 @@
 #include <stddef.h>
 
 #ifndef REDIS_H
-#define RSDIS_H
+#define REDIS_H
 
 #define CMD_OK 0
 #define CMD_ERR_ARGS 1
@@ -12,7 +12,7 @@
 typedef struct Dict Dict;
 
 //创建键值对字典，返回指向结构体字典的指针
-Dict *dict_creat(void);
+Dict *dict_create(void);
 
 //释放内存
 void dict_free(Dict *d);
